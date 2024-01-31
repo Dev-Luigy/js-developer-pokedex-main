@@ -15,7 +15,18 @@ function convertPokemonToHtml(pokemon){
 }
 
 const pokemonOL = document.getElementById("pokemonList")
+const loadMoreButton = document.getElementById("loadMoreButton")
+var lastLoaded = 0;
 
 PokeApi.getPokemons().then((pokemons = []) => {
     pokemonOL.innerHTML += pokemons.map(convertPokemonToHtml).join('')
+    lastLoaded += lastLoaded ? 50 : 10;
+})
+
+loadMoreButton.addEventListener("click", function (){
+    PokeApi.getPokemons(lastLoaded, 50)
+            .then((pokemons = []) => {
+                pokemonOL.innerHTML += pokemons.map(convertPokemonToHtml).join('')
+                lastLoaded += 50
+            })
 })
